@@ -67,7 +67,7 @@ if (function_exists('shell_exec')) {
 					if ($_POST['validate_token'] === $currentToken->token) {
 						
 						// do rsync
-						$rsync_cmd = shell_exec($rsync);
+						$rsync_cmd = shell_exec(str_replace('--dry-run', '', $rsync));
 						writeLog($rsync . "\n" . $rsync_cmd);
 
 						$emailBody = '<h3>' . $message['rsync_complete'] . ' ' . $message['rsync_thank_you'] . '</h3>'; 
