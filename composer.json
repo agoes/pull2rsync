@@ -1,0 +1,15 @@
+
+{
+	"name": "agoes/pull2rsync",
+	"description": "git webhook for autopull to staging and rsync to production",
+	"version": "1.0",
+	"license": "LGPL-3.0",
+	"support": {
+		"source": "https://github.com/agoes/pull2rsync",
+		"issues": "https://github.com/agoes/pull2rsync/issues"
+	},
+	"require": {
+		"phpmailer/phpmailer": "dev-master"
+	}
+}
+

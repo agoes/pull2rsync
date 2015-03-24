@@ -1,0 +1,63 @@
+body {
+	background-color: #514b4b;
+	color: #3ddb1a;
+	font-family: "Lucida Console", Monaco, monospace;
+	font-size: 16px;
+}
+
+.container {
+	margin: 0 auto;
+	width: 70%;
+}
+
+h2 {
+	color: #fff;
+}
+
+pre {
+	margin-top: 60px;
+	white-space: pre-wrap;       /* css-3 */
+	white-space: -moz-pre-wrap;  /* Mozilla, since 1999 */
+	white-space: -pre-wrap;      /* Opera 4-6 */
+	white-space: -o-pre-wrap;    /* Opera 7 */
+	word-wrap: break-word;       /* Internet Explorer 5.5+ */
+}
+
+pre > b {
+	color: #fff;
+}
+
+.warning {
+	font-weight: bold;
+	color: #ff0000;
+	padding: 15px;
+	border: 1px dashed #fff;
+	background-color: #fff;
+}
+
+input.btn {
+	padding: 10px;
+	font-size: 12px;
+	font-weight: bold;
+}
+
+input.text {
+	padding: 10px;
+	width: 300px;
+}
+
+form > ul,li,h3 {
+	color: yellow;
+}
+
+.message {
+	color: #4D4C4C;
+	text-align: center;
+	background-color: #fff;
+	padding: 10px;
+	width: 30%;
+	margin: 0 auto;
+	position: relative;
+	top: 45px;
+	font-weight: bold;
+}

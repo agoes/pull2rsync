@@ -1,0 +1,10 @@
+ {
+	"writeable": [
+		"uploads/",
+		"system/cache"
+	],
+	"rsync_exclude" : [
+		"system/",
+		"images/dummy/"
+	]
+}

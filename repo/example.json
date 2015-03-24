@@ -1,0 +1,31 @@
+{
+	"name": "example-project",
+	"description": "Description",
+	"git": "https://username@github.com/username/pull2rsync.git",
+	"staging": {
+		"document_root": "/staging/document/root",
+		"url": "http://hostname/staging/url/"
+	},
+	"production": {
+		"auth": "sshuser@host",
+		"document_root": "/production/document/root",
+		"url": "http://production.hostname/",
+		"roles": [
+			{
+				"name": "admin",
+				"email": "admin@production.hostname",
+				"role": "administrator"
+			},
+			{
+				"name": "dev",
+				"email": "dev@production.hostname",
+				"role": "developer"
+			},
+			{
+				"name": "lead dev",
+				"email": "leaddev@production.hostname",
+				"role": "lead-developer"
+			}
+		]
+	}
+}
