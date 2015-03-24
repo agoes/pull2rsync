@@ -67,12 +67,12 @@ if (function_exists('shell_exec')) {
 					if ($_POST['validate_token'] === $currentToken->token) {
 						
 						// do rsync
-						$rsync = shell_exec($rsync);
-						writeLog($rsync);
+						$rsync_cmd = shell_exec($rsync);
+						writeLog($rsync . "\n" . $rsync_cmd);
 
 						$emailBody = '<h3>' . $message['rsync_complete'] . ' ' . $message['rsync_thank_you'] . '</h3>'; 
 						$emailBody .= '<pre>' . $rsync_masked . '
-							' . $rsync . '
+							' . $rsync_cmd . '
 							</pre>';
 
 						sendMail($repo->production->roles, $emailBody, TRUE);
