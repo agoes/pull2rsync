@@ -7,7 +7,7 @@
  * @copyright agoes, 17 March, 2015
  **/
 
-$language['id'] = array(
+$language['en'] = array(
 	'invalid_host' => 'Git repository host %s is not allowed.',
 	'shell_exec_failed' => 'shell_exec is not available or not allowed this time.',
 	'webhook_denied' => 'Webhook host is not allowed',
