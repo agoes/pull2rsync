@@ -44,4 +44,6 @@ if (isset($_GET['module']) && isset($_GET['id'])) {
 		}
 
 	}
+} else {
+	echo 'Thank you for using <a href="https://github.com/agoes/pull2rsync">pull2rsync</a> :)';
 }
