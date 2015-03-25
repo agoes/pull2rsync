@@ -82,7 +82,7 @@ $config['git']['branch'] = 'master';
 // smtp
 $config['smtp'] = array(
 	'host' => '',
-	'port' => ,
+	'port' => '',
 	'username' => '',
 	'password' => '',
 	'secure' => '',
@@ -110,7 +110,7 @@ $config['log']['path'] = '/path/to/log/directory';
  */
 
 // locale setting
-$config['language'] = 'en-us';
+$config['language'] = 'en';
 
 // default timezone 
 date_default_timezone_set('Asia/Jakarta');
