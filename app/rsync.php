@@ -19,12 +19,12 @@ if (function_exists('shell_exec')) {
 	if (isset($deploy->rsync_exclude)) {
 		$exclude = array_merge($exclude, $deploy->rsync_exclude);
 	}
-	$exclude = '--exclude ' . implode(' --exclude ', $exclude);
+	$exclude = '--exclude \'' . implode('\' --exclude ', $exclude) . '\'';
 
 	// public directories or files
 	$chmod = '';
 	if (isset($deploy->writeable)) {
-		$chmod = '&& chmod 777 ' . implode(' ', $deploy->writeable);
+		$chmod = '&& chmod -R 777 ' . implode(' ', $deploy->writeable);
 	}
 
 	// dry run first
