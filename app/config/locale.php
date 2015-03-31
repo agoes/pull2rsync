@@ -8,9 +8,7 @@
  **/
 
 $language['en'] = array(
-	'invalid_host' => 'Git repository host %s is not allowed.',
 	'shell_exec_failed' => 'shell_exec is not available or not allowed this time.',
-	'webhook_denied' => 'Webhook host is not allowed',
 	'no_deploy' => 'deploy.json not found',
 	'request_rsync_token' => 'rsync token request',
 	'request_rsync_token_body' => 'Rsync has been requested, please use the token code below.',
