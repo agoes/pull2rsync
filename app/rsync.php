@@ -19,7 +19,7 @@ if (function_exists('shell_exec')) {
 	if (isset($deploy->rsync_exclude)) {
 		$exclude = array_merge($exclude, $deploy->rsync_exclude);
 	}
-	$exclude = '--exclude \'' . implode('\' --exclude ', $exclude) . '\'';
+	$exclude = '--exclude \'' . implode('\' --exclude \'', $exclude) . '\'';
 
 	// public directories or files
 	$chmod = '';
