@@ -70,20 +70,33 @@ if (function_exists('shell_exec')) {
 						$rsync_cmd = shell_exec(str_replace('--dry-run', '', $rsync));
 						writeLog($rsync . "\n" . $rsync_cmd);
 
-						$emailBody = '<h3>' . $message['rsync_complete'] . ' ' . $message['rsync_thank_you'] . '</h3>'; 
-						$emailBody .= '<pre>' . $rsync_masked . '
+						$emailBody = '<h3>' . $message['rsync_complete'] . ' ' . $message['rsync_thank_you'] . '</h3>'; $emailBody .= '<pre>' . $rsync_masked . '
 							' . $rsync_cmd . '
 							</pre>';
 
+						// succeeded
+						unlink($tokenFile);
 						sendMail($repo->production->roles, $emailBody, TRUE);
-
 						redirect($_GET['module'], $_GET['id'], '', $message['rsync_complete']);
 
 					} else {
 						// empty or invalid token
 						redirect($_GET['module'], $_GET['id'], '', $message['invalid_rsync_token']);
 					}
-				}	
+				}
+
+				// reject token
+				if (isset($_GET['act']) && isset($_GET['token'])) {
+					if ($_GET['act'] === 'reject' && $_GET['token'] === $currentToken->token) {
+						$emailBody = '<h3>' . $message['rsync_rejected'] . '</h3>'; 
+						$emailBody .= '<pre>' . $rsync_masked . '
+							' . $rsync_cmd . '
+							</pre>';
+
+						unlink($tokenFile);
+						sendMail($repo->production->roles, $emailBody, TRUE);
+					} 
+				}
 			}
 		}
 
@@ -116,6 +129,7 @@ if (function_exists('shell_exec')) {
 			// send mail after create token
 			$emailBody = "<h3>\n" . $rsync_info . "</h3><pre>" . $response . "\n</pre>";
 			$emailBody .= "<p>" . $message['request_rsync_token_body'] . " (Expired at : " . date('d M Y H:i:s', time() + $config['rsync']['token_expire']) . ")</p><h2><pre style=\"color: #ff0000\">Token : " . $token . "</pre></h2>";
+			$emailBody .= 'Reject rsync : ' . baseURL() . '/index.php?module=' . $_GET['module'] . '&id=' . $_GET['id'] . '&act=reject&token=' . $token;
 			sendMail($repo->production->roles, $emailBody);
 
 			// token page
