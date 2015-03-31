@@ -52,7 +52,19 @@ if (function_exists('shell_exec')) {
 			// read file and check expire
 			$currentToken = json_decode(file_get_contents($tokenFile));
 
-			if ($currentToken->expire <= time()) {
+			// reject token
+			if (isset($_GET['act']) && isset($_GET['token'])) {
+				if ($_GET['act'] === 'reject' && $_GET['token'] === $currentToken->token) {
+					$emailBody = '<h3>' . $message['rsync_rejected'] . '</h3>'; 
+					$emailBody .= '<pre>' . $rsync_masked . '
+						' . $rsync_cmd . '
+						</pre>';
+
+					unlink($tokenFile);
+					sendMail($repo->production->roles, $emailBody, TRUE);
+					redirect($_GET['module'], $_GET['id'],'', $message['rsync_rejected']);
+				} 
+			} elseif ($currentToken->expire <= time()) {
 				// delete old token
 				unlink($tokenFile);
 
@@ -85,19 +97,6 @@ if (function_exists('shell_exec')) {
 					}
 				}
 
-				// reject token
-				if (isset($_GET['act']) && isset($_GET['token'])) {
-					if ($_GET['act'] === 'reject' && $_GET['token'] === $currentToken->token) {
-						$emailBody = '<h3>' . $message['rsync_rejected'] . '</h3>'; 
-						$emailBody .= '<pre>' . $rsync_masked . '
-							' . $rsync_cmd . '
-							</pre>';
-
-						unlink($tokenFile);
-						sendMail($repo->production->roles, $emailBody, TRUE);
-						redirect($_GET['module'], $_GET['id'],'', $message['rsync_rejected']);
-					} 
-				}
 			}
 		}
 
