@@ -22,5 +22,6 @@ $language['en'] = array(
 	</u>',
 	'rsync_complete' => 'rsync was beautifully done .. ',
 	'invalid_rsync_token' => 'rsync failed, token may be incorrect',
-	'rsync_thank_you' => 'Thank you for using pull2rsync'
+	'rsync_thank_you' => 'Thank you for using pull2rsync',
+	'rsync_rejected' => 'rsync request was rejected, please contact your administrator'
 );
