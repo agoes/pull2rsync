@@ -95,6 +95,7 @@ if (function_exists('shell_exec')) {
 
 						unlink($tokenFile);
 						sendMail($repo->production->roles, $emailBody, TRUE);
+						redirect($_GET['module'], $_GET['id'],'', $message['rsync_rejected']);
 					} 
 				}
 			}
