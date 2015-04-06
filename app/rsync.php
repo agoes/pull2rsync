@@ -18,15 +18,15 @@ if (!file_exists($deploy)) {
 
 if (function_exists('shell_exec')) {
 
-	// set writeable directories / files
 	$deploy = json_decode(file_get_contents($deploy));
+
+	// set writeable directories / files
 	foreach($deploy->writeable as $i) {
 		$chmod = shell_exec($cd . " && chmod 777 " . $i);
 		writeLog($chmod);
 	}
 
 	// load exluded file / dir
-	$deploy = json_decode(file_get_contents($deploy));
 	$exclude = $config['rsync']['exclude'];
 	if (isset($deploy->rsync_exclude)) {
 		$exclude = array_merge($exclude, $deploy->rsync_exclude);
