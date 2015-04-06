@@ -22,7 +22,7 @@ if (function_exists('shell_exec')) {
 	$deploy = json_decode(file_get_contents($deploy));
 	foreach($deploy->writeable as $i) {
 		$chmod = shell_exec($cd . " && chmod 777 " . $i);
-		writeLog($cmd);
+		writeLog($chmod);
 	}
 
 	// load exluded file / dir
