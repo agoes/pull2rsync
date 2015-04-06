@@ -26,11 +26,11 @@ if (isset($_GET['module']) && isset($_GET['id'])) {
 			die('Invalid repository configuration');
 		}
 		
+		$repo = json_decode(file_get_contents($repoConfig));
+		
 		$cd = "cd " . $repo->staging->document_root;
 		$suffix = $config['command']['_suffix'];
 
-		$repo = json_decode(file_get_contents($repoConfig));
-		
 		require_once __DIR__ . '/' . $currentModule;
 
 		// load template
