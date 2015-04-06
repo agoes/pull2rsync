@@ -9,6 +9,13 @@
  * @copyright agoes, 19 March, 2015
  **/
 
+// check deploy.json
+$deploy = $repo->staging->document_root . '/' . $config['rsync']['deploy_file'];
+if (!file_exists($deploy)) {
+	writeLog('[failed] ' . $message['no_deploy']);
+	exit;
+}
+
 if (function_exists('shell_exec')) {
 	$cd = "cd " . $repo->staging->document_root;
 	$suffix = $config['command']['_suffix'];

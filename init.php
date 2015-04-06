@@ -28,13 +28,6 @@ if (isset($_GET['module']) && isset($_GET['id'])) {
 
 		$repo = json_decode(file_get_contents($repoConfig));
 		
-		// check deploy.json
-		$deploy = $repo->staging->document_root . '/' . $config['rsync']['deploy_file'];
-		if (!file_exists($deploy)) {
-			writeLog('[failed] ' . $message['no_deploy']);
-			exit;
-		}
-
 		require_once __DIR__ . '/' . $currentModule;
 
 		// load template
