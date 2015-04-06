@@ -17,6 +17,14 @@ if (!file_exists($deploy)) {
 }
 
 if (function_exists('shell_exec')) {
+
+	// set writeable directories / files
+	$deploy = json_decode(file_get_contents($deploy));
+	foreach($deploy->writeable as $i) {
+		$chmod = shell_exec($cd . " && chmod 777 " . $i);
+		writeLog($cmd);
+	}
+
 	$cd = "cd " . $repo->staging->document_root;
 	$suffix = $config['command']['_suffix'];
 
