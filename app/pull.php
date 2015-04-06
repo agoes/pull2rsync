@@ -10,7 +10,6 @@
  **/
 
 if (function_exists('shell_exec')) {
-	$cd = "cd " . $repo->staging->document_root;
 	
 	// command suffix
 	$suffix = $config['command']['_suffix'];

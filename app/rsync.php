@@ -25,9 +25,6 @@ if (function_exists('shell_exec')) {
 		writeLog($cmd);
 	}
 
-	$cd = "cd " . $repo->staging->document_root;
-	$suffix = $config['command']['_suffix'];
-
 	// load exluded file / dir
 	$deploy = json_decode(file_get_contents($deploy));
 	$exclude = $config['rsync']['exclude'];
