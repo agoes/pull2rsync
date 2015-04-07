@@ -62,6 +62,7 @@ $config['git']['path'] = '/usr/bin/git';
 $config['git']['command'] = array(
 	'remote_url' => $config['git']['path'] . ' ls-remote --get-url',
 	'pull' => $config['git']['path'] . ' pull',
+	'clone' => $config['git']['path'] . ' clone',
 	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}'
 );
 
