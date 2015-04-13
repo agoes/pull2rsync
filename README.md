@@ -32,3 +32,6 @@ Let say you have to start a project named "My awesome website". So this is what 
 4. If you had the token, paste it into click "validate token".
 5. If rsync was succeeded, notification will be sent to all project member. 
 
+### Todo
+1. rsync option for directories structures tree only
+2. Clone / pull branch in staging mechanism
