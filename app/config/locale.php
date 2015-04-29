@@ -22,5 +22,5 @@ $language['en'] = array(
 	'invalid_rsync_token' => 'rsync failed, token may be incorrect',
 	'rsync_thank_you' => 'Thank you for using pull2rsync',
 	'rsync_rejected' => 'rsync rejected !!!',
-	'Unsupported webhook response'
+	'webhook_failed' => 'Unsupported webhook response'
 );
