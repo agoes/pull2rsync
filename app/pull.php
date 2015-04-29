@@ -15,19 +15,24 @@ if (function_exists('shell_exec')) {
 	$suffix = $config['command']['_suffix'];
 
 	// get branch
-	$json  = json_decode(file_get_contents("php://input"));
+	$json = json_decode(file_get_contents("php://input"));
 	if (!isset($json->ref)) {
 		writeLog($message['webhook_failed']);
 		exit;
 	} else {
 		$branch = str_replace('refs/heads/', '', $json->ref);
-		$branch_dir = $config['git']['branch_dir'] . '/' . $branch;
+		$branch_dir = '/' . $config['git']['branch_dir'] . '/' . $branch;
+
+		// dont create subdirectory for master
+		if ($branch == 'master') {
+			$branch_dir = '/';
+		}
 	}
 
-	if (!file_exists($repo->staging->document_root)) {
+	if (!file_exists($repo->staging->document_root . $branch_dir)) {
 		// clone
-		$clone = shell_exec($config['git']['command']['clone'] . " -b " . $branch . " " . $repo->git . " " . $repo->staging->document_root . "/" . $branch_dir . " " . $suffix);
-		writeLog($clone);
+		$clone = shell_exec($config['git']['command']['clone'] . " -b " . $branch . " " . $repo->git . " " . $repo->staging->document_root . $branch_dir . " " . $suffix);
+		writeLog('Cloning : ' . $clone);
 	} else {
 
 		// load repository config based on GET['id']
@@ -35,14 +40,7 @@ if (function_exists('shell_exec')) {
 
 			// pull repository
 			$cmd = shell_exec($cd . "/" . $branch_dir . " && " . $config['git']['command']['pull'] . " " . $suffix);
-
-			// if failed to pull, write to error log
-			if ($cmd !== 'Already up-to-date.' || !stristr($cmd, 'file changed') || substr($cmd, 0, 5) == 'error') {
-				writeLog($cmd);
-			} else {
-				// succeed
-				writeLog($cmd);
-			}
+			writeLog('Pulling : ' . $cmd);
 		}
 	}
 
