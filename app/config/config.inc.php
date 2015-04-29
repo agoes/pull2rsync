@@ -66,8 +66,8 @@ $config['git']['command'] = array(
 	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}'
 );
 
-// allowed branch to pull
-$config['git']['branch'] = 'master';
+// will pull/clone another branch (except master) into this directory
+$config['git']['branch_dir'] = 'branch_dir';
 
 /*
  * end of git configuration

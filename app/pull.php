@@ -14,26 +14,34 @@ if (function_exists('shell_exec')) {
 	// command suffix
 	$suffix = $config['command']['_suffix'];
 
+	// get branch
+	$json  = json_decode(file_get_contents("php://input"));
+	if (!isset($json->ref)) {
+		writeLog($message['webhook_failed']);
+		exit;
+	} else {
+		$branch = str_replace('refs/heads/', '', $json->ref);
+		$branch_dir = $config['git']['branch_dir'] . '/' . $branch;
+	}
+
 	if (!file_exists($repo->staging->document_root)) {
 		// clone
-		$clone = shell_exec($config['git']['command']['clone'] . " " . $repo->git . " " . $repo->staging->document_root . " " . $suffix);
+		$clone = shell_exec($config['git']['command']['clone'] . " -b " . $branch . " " . $repo->git . " " . $repo->staging->document_root . "/" . $branch_dir . " " . $suffix);
 		writeLog($clone);
 	} else {
-		// get remote host & check git host
-		$remote = trim(shell_exec($cd . " && " . $config['git']['command']['remote_url']));
 
 		// load repository config based on GET['id']
 		if (isset($_GET['id'])) {
 
 			// pull repository
-			$cmd = shell_exec($cd . " && " . $config['git']['command']['pull'] . " " . $suffix);
+			$cmd = shell_exec($cd . "/" . $branch_dir . " && " . $config['git']['command']['pull'] . " " . $suffix);
 
 			// if failed to pull, write to error log
 			if ($cmd !== 'Already up-to-date.' || !stristr($cmd, 'file changed') || substr($cmd, 0, 5) == 'error') {
 				writeLog($cmd);
 			} else {
 				// succeed
-				writeLog('[complete] ' . $cmd);
+				writeLog($cmd);
 			}
 		}
 	}
