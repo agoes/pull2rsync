@@ -32,15 +32,23 @@ if (function_exists('shell_exec')) {
 	if (!file_exists($repo->staging->document_root . $branch_dir)) {
 		// clone
 		$clone = shell_exec($config['git']['command']['clone'] . " -b " . $branch . " " . $repo->git . " " . $repo->staging->document_root . $branch_dir . " " . $suffix);
-		writeLog('Cloning : ' . $clone);
+		writeLog('Clone : ' . $clone);
 	} else {
 
 		// load repository config based on GET['id']
 		if (isset($_GET['id'])) {
 
 			// pull repository
-			$cmd = shell_exec($cd . "/" . $branch_dir . " && " . $config['git']['command']['pull'] . " " . $suffix);
-			writeLog('Pulling : ' . $cmd);
+			$init_cmd = $cd . "/" . $branch_dir . " && ";
+			$cmd = shell_exec($init_cmd . $config['git']['command']['pull'] . " " . $suffix);
+			writeLog('Pull : ' . $branch . $cmd);
+
+			// pull failed !!
+			if (stristr($cmd, 'error:')) {
+				$cmd = shell_exec($init_cmd . $config['git']['command']['fetch_all'] . " " . $suffix);
+				$cmd = shell_exec($init_cmd . $config['git']['command']['hard_reset'] . . $branch . " " . $suffix);
+				writeLog('Reset : ' . $cmd);
+			}
 		}
 	}
 
