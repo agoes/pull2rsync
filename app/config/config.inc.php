@@ -63,7 +63,9 @@ $config['git']['command'] = array(
 	'remote_url' => $config['git']['path'] . ' ls-remote --get-url',
 	'pull' => $config['git']['path'] . ' pull',
 	'clone' => $config['git']['path'] . ' clone',
-	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}'
+	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}',
+	'fetch_all' => $config['git']['path'] . ' fetch --all',
+	'hard_reset' => $config['git']['path'] . ' reset --hard origin/',
 );
 
 // will pull/clone another branch (except master) into this directory
