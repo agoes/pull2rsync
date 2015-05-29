@@ -44,6 +44,9 @@ $config['rsync']['hide_information'] = TRUE;
 // token will be sent to the user group below
 $config['rsync']['token_role'] = array('administrator', 'lead-developer');
 
+// rsync default port
+$config['rsync']['port'] = 22;
+
 /*
  * end of rsync configuration
  * ========================================================
