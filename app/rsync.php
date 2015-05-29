@@ -20,10 +20,16 @@ if (function_exists('shell_exec')) {
 
 	$deploy = json_decode(file_get_contents($deploy));
 
-	// set writeable directories / files
-	foreach($deploy->writeable as $i) {
-		$chmod = shell_exec($cd . " && chmod 777 " . $i);
-		writeLog($chmod);
+	// public directories or files
+	$chmod = '';
+	if (isset($deploy->writeable) && count($deploy->writeable) > 0) {
+        // set writeable directories / files
+        foreach($deploy->writeable as $i) {
+            $chmod = shell_exec($cd . " && chmod 777 " . $i);
+            writeLog($chmod);
+        }
+
+		$chmod = '&& chmod -R 777 ' . implode(' ', $deploy->writeable);
 	}
 
 	// load exluded file / dir
@@ -33,22 +39,26 @@ if (function_exists('shell_exec')) {
 	}
 	$exclude = '--exclude \'' . implode('\' --exclude \'', $exclude) . '\'';
 
-	// public directories or files
-	$chmod = '';
-	if (isset($deploy->writeable)) {
-		$chmod = '&& chmod -R 777 ' . implode(' ', $deploy->writeable);
-	}
 
 	// dry run first
 	$opt = '--dry-run ' . $exclude;
 
+    // port to use rsync
+    $port = " -e \"ssh -p ";
+    if (isset($repo->production->port)) {
+        $port = $port . $repo->production->port . "\"";
+    } elseif(isset($config['rsync']['port'])) {
+        $port = $port . $config['rsync']['port'] . "\"";
+    } else {
+        $port = $port . 22 . "\"";
+    }
+
 	// rsync command
-	$rsync = $cd . ' && rsync -azv ' . trim($opt) . ' * ' . $repo->production->auth . ':' . $repo->production->document_root . '/ ' . $suffix;
+	$rsync = $cd . ' && rsync -azv ' . trim($opt) . ' * ' . $repo->production->auth . ':' . $repo->production->document_root . '/ ' . $port . ' ' . $suffix;
 	
 	// hide path and production auth
 	$rsync_masked = 'cd /staging/path/of/<b>' . $repo->name . '</b> && rsync -azv <b>' . trim($opt) . ' *</b>  user@production-host:/production/path/of/<b>' . $repo->name . '/ ' . $chmod . '</b> ' . $suffix;
 	$response = shell_exec($rsync);
-
 
 	if ($config['rsync']['hide_information'] === TRUE) {
 		$rsync_info = $rsync_masked;
