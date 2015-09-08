@@ -43,10 +43,10 @@ if (function_exists('shell_exec')) {
 	$opt = '--dry-run ' . $exclude;
 
 	// rsync command
-	$rsync = $cd . ' && rsync -azv ' . trim($opt) . ' * ' . $repo->production->auth . ':' . $repo->production->document_root . '/ ' . $suffix;
+	$rsync = $cd . ' && rsync -azv ' . trim($opt) . ' . ' . $repo->production->auth . ':' . $repo->production->document_root . '/ ' . $suffix;
 	
 	// hide path and production auth
-	$rsync_masked = 'cd /staging/path/of/<b>' . $repo->name . '</b> && rsync -azv <b>' . trim($opt) . ' *</b>  user@production-host:/production/path/of/<b>' . $repo->name . '/ ' . $chmod . '</b> ' . $suffix;
+	$rsync_masked = 'cd /staging/path/of/<b>' . $repo->name . '</b> && rsync -azv <b>' . trim($opt) . ' .</b>  user@production-host:/production/path/of/<b>' . $repo->name . '/ ' . $chmod . '</b> ' . $suffix;
 	$response = shell_exec($rsync);
 
 
