@@ -14,26 +14,40 @@ if (function_exists('shell_exec')) {
 	// command suffix
 	$suffix = $config['command']['_suffix'];
 
-	if (!file_exists($repo->staging->document_root)) {
-		// clone
-		$clone = shell_exec($config['git']['command']['clone'] . " " . $repo->git . " " . $repo->staging->document_root . " " . $suffix);
-		writeLog($clone);
+	// get branch
+	$json = json_decode(file_get_contents("php://input"));
+	if (!isset($json->ref)) {
+		writeLog($message['webhook_failed']);
+		exit;
 	} else {
-		// get remote host & check git host
-		$remote = trim(shell_exec($cd . " && " . $config['git']['command']['remote_url']));
+		$branch = str_replace('refs/heads/', '', $json->ref);
+		$branch_dir = '/' . $config['git']['branch_dir'] . '/' . $branch;
+
+		// dont create subdirectory for master
+		if ($branch == 'master') {
+			$branch_dir = '/';
+		}
+	}
+
+	if (!file_exists($repo->staging->document_root . $branch_dir)) {
+		// clone
+		$clone = shell_exec($config['git']['command']['clone'] . " -b " . $branch . " " . $repo->git . " " . $repo->staging->document_root . $branch_dir . " " . $suffix);
+		writeLog('Clone : ' . $clone);
+	} else {
 
 		// load repository config based on GET['id']
 		if (isset($_GET['id'])) {
 
 			// pull repository
-			$cmd = shell_exec($cd . " && " . $config['git']['command']['pull'] . " " . $suffix);
+			$init_cmd = $cd . "/" . $branch_dir . " && ";
+			$cmd = shell_exec($init_cmd . $config['git']['command']['pull'] . " " . $suffix);
+			writeLog('Pull : ' . $branch . $cmd);
 
-			// if failed to pull, write to error log
-			if ($cmd !== 'Already up-to-date.' || !stristr($cmd, 'file changed') || substr($cmd, 0, 5) == 'error') {
-				writeLog($cmd);
-			} else {
-				// succeed
-				writeLog('[complete] ' . $cmd);
+			// pull failed !!
+			if (stristr($cmd, 'error:')) {
+				$cmd = shell_exec($init_cmd . $config['git']['command']['fetch_all'] . " " . $suffix);
+				$cmd = shell_exec($init_cmd . $config['git']['command']['hard_reset'] . . $branch . " " . $suffix);
+				writeLog('Reset : ' . $cmd);
 			}
 		}
 	}

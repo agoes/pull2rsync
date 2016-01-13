@@ -30,8 +30,4 @@ Let say you have to start a project named "My awesome website". So this is what 
 2. Run request token if you want to rsync those changes to production server.
 3. Pull2rsync will send an email contains the token number for your request. Normally, email will be sent to administrator or lead-developer (check [app/config.inc.php](app/config.inc.php))
 4. If you had the token, paste it into click "validate token".
-5. If rsync was succeeded, notification will be sent to all project member. 
-
-### Todo
-1. rsync option for directories structures tree only
-2. Clone / pull branch in staging mechanism
+5. If rsync was succeeded, notification will be sent to all project member.

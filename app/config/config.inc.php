@@ -44,6 +44,9 @@ $config['rsync']['hide_information'] = TRUE;
 // token will be sent to the user group below
 $config['rsync']['token_role'] = array('administrator', 'lead-developer');
 
+// rsync default port
+$config['rsync']['port'] = 22;
+
 /*
  * end of rsync configuration
  * ========================================================
@@ -63,11 +66,13 @@ $config['git']['command'] = array(
 	'remote_url' => $config['git']['path'] . ' ls-remote --get-url',
 	'pull' => $config['git']['path'] . ' pull',
 	'clone' => $config['git']['path'] . ' clone',
-	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}'
+	'branch' => $config['git']['path'] . ' rev-parse --abbrev-ref --symbolic-full-name @{u}',
+	'fetch_all' => $config['git']['path'] . ' fetch --all',
+	'hard_reset' => $config['git']['path'] . ' reset --hard origin/',
 );
 
-// allowed branch to pull
-$config['git']['branch'] = 'master';
+// will pull/clone another branch (except master) into this directory
+$config['git']['branch_dir'] = 'branch_dir';
 
 /*
  * end of git configuration

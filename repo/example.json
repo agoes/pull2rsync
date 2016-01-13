@@ -8,6 +8,7 @@
 	},
 	"production": {
 		"auth": "sshuser@host",
+        "port": "22",
 		"document_root": "/production/document/root",
 		"url": "http://production.hostname/",
 		"roles": [
