@@ -25,8 +25,10 @@ if (function_exists('shell_exec')) {
 	if (isset($deploy->writeable) && count($deploy->writeable) > 0) {
         // set writeable directories / files
         foreach($deploy->writeable as $i) {
-            $chmod = shell_exec($cd . " && chmod 777 " . $i);
-            writeLog($chmod);
+            if ($i !== '/') {
+                $chmod = shell_exec($cd . " && chmod 777 " . $i);
+                writeLog($chmod);
+            }
         }
 
 		$chmod = '&& chmod -R 777 ' . implode(' ', $deploy->writeable);
@@ -55,7 +57,7 @@ if (function_exists('shell_exec')) {
 
 	// rsync command
 	$rsync = $cd . ' && rsync -azv ' . trim($opt) . ' * ' . $repo->production->auth . ':' . $repo->production->document_root . '/ ' . $port . ' ' . $suffix;
-	
+
 	// hide path and production auth
 	$rsync_masked = 'cd /staging/path/of/<b>' . $repo->name . '</b> && rsync -azv <b>' . trim($opt) . ' *</b>  user@production-host:/production/path/of/<b>' . $repo->name . '/ ' . $chmod . '</b> ' . $suffix;
 	$response = shell_exec($rsync);
@@ -77,7 +79,7 @@ if (function_exists('shell_exec')) {
 			// reject token
 			if (isset($_GET['act']) && isset($_GET['token'])) {
 				if ($_GET['act'] === 'reject' && $_GET['token'] === $currentToken->token) {
-					$emailBody = '<h3>' . $message['rsync_rejected'] . '</h3>'; 
+					$emailBody = '<h3>' . $message['rsync_rejected'] . '</h3>';
 					$emailBody .= '<pre>' . $rsync_masked . '
 						' . $rsync_cmd . '
 						</pre>';
@@ -85,7 +87,7 @@ if (function_exists('shell_exec')) {
 					unlink($tokenFile);
 					sendMail($repo->production->roles, $emailBody, TRUE);
 					redirect($_GET['module'], $_GET['id'],'', $message['rsync_rejected']);
-				} 
+				}
 			} elseif ($currentToken->expire <= time()) {
 				// delete old token
 				unlink($tokenFile);
@@ -99,7 +101,7 @@ if (function_exists('shell_exec')) {
 				// validate token input
 				if (isset($_POST['validate_token'])) {
 					if ($_POST['validate_token'] === $currentToken->token) {
-						
+
 						// do rsync
 						$rsync_cmd = shell_exec(str_replace('--dry-run', '', $rsync));
 						writeLog($rsync . "\n" . $rsync_cmd);
@@ -125,7 +127,7 @@ if (function_exists('shell_exec')) {
 		// request new token
 		if (isset($_POST['request_token'])) {
 
-			// create new token ... 
+			// create new token ...
 			$tokenFile = fopen($tokenFile,'w');
 			$token = sha1(time() . md5(rand()) . $_GET['id']);
 			$tokenAuthor = array();
